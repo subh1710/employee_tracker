@@ -42,7 +42,7 @@ public class Employee {
 	@JoinColumn(name = "employee_login_manager_id")
 	private EmployeeLoginManager employeeLoginManager;
 
-	@OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
 			CascadeType.REFRESH })
 	@JsonIgnore
 	private List<Notice> notices;
