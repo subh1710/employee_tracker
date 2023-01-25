@@ -11,6 +11,7 @@ import com.subh.springdemo.common.APIResponse;
 import com.subh.springdemo.dao.EmployeeDAO;
 import com.subh.springdemo.dto.LoginRequestDTO;
 import com.subh.springdemo.entity.Employee;
+import com.subh.springdemo.rest.EmployeeNotFoundException;
 import com.subh.springdemo.util.JwtUtils;
 
 @Service
@@ -31,13 +32,18 @@ public class LoginServiceImpl implements LoginService{
 	        // validation
 
 	        // verify user exist with given email and password
-		 Employee employee = employeeDAO.getEmployeeBySecurityCode(loginRequestDTO.getSecurityCode());
+		 Employee employee;
+		try {
+			employee = employeeDAO.getEmployeeBySecurityCode(loginRequestDTO.getSecurityCode());
+		} catch (Exception e) {
+			throw new EmployeeNotFoundException("Employee not found with security code: " + loginRequestDTO.getSecurityCode());		
+			}
 
 	        // response
-	        if(employee == null){
-	            apiResponse.setData("User login failed");
-	            return apiResponse;
-	        }
+//	        if(employee == null){
+//	            apiResponse.setData("User login failed");
+//	            return apiResponse;
+//	        }
 
 	        // generate jwt
 	        String token = jwtUtils.generateJwt(employee);

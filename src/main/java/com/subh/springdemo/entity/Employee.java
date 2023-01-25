@@ -1,14 +1,21 @@
 package com.subh.springdemo.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "employee_master")
@@ -31,9 +38,19 @@ public class Employee {
 	@Column(name = "is_admin")
 	private boolean isAdmin;
 
-	@OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true)
+	@OneToOne(cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@JoinColumn(name = "employee_login_manager_id")
 	private EmployeeLoginManager employeeLoginManager;
+
+	@OneToMany(mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+			CascadeType.REFRESH })
+	@JsonIgnore
+	private List<Notice> notices;
+
+	@OneToMany(mappedBy = "employeeAttendance", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+			CascadeType.REFRESH })
+	@JsonIgnore
+	private List<Attendance> attendances;
 
 	public Employee() {
 	}
@@ -92,6 +109,38 @@ public class Employee {
 
 	public void setEmployeeLoginManager(EmployeeLoginManager employeeLoginManager) {
 		this.employeeLoginManager = employeeLoginManager;
+	}
+
+	public List<Notice> getNotices() {
+		return notices;
+	}
+
+	public void setNotices(List<Notice> notices) {
+		this.notices = notices;
+	}
+
+	public List<Attendance> getAttendances() {
+		return attendances;
+	}
+
+	public void setAttendances(List<Attendance> attendances) {
+		this.attendances = attendances;
+	}
+
+	public void addNotice(Notice tempNotice) {
+		if (notices == null) {
+			notices = new ArrayList<>();
+		}
+		notices.add(tempNotice);
+		tempNotice.setEmployee(this);
+	}
+
+	public void addAttendance(Attendance tempAttendance) {
+		if (attendances == null) {
+			attendances = new ArrayList<>();
+		}
+		attendances.add(tempAttendance);
+		tempAttendance.setEmployeeAttendance(this);
 	}
 
 	@Override

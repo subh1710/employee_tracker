@@ -47,7 +47,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 	
 	@Override
-	public Employee getEmployeeBySecurityCode(String empSecurityCode) {
+	public Employee getEmployeeBySecurityCode(String empSecurityCode) throws Exception {
 		Session currentSession = sessionFactory.getCurrentSession();
 		EmployeeLoginManager employeeLoginManager = (EmployeeLoginManager) currentSession
 				.createQuery("from EmployeeLoginManager where empSecurityCode=:empSecurityCode")

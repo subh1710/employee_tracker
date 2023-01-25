@@ -14,5 +14,5 @@ public interface EmployeeDAO {
 
 	public void deleteEmployee(int theId);
 
-	Employee getEmployeeBySecurityCode(String empSecurityCode);
+	Employee getEmployeeBySecurityCode(String empSecurityCode) throws Exception;
 }
