@@ -24,7 +24,7 @@ public class AttendanceDAOImpl implements AttendanceDAO {
 	public List<AttendanceEntityResponse> getAttendances(int employeeId) {
 		Session currentSession = sessionFactory.getCurrentSession();
 		SQLQuery query = currentSession.createSQLQuery(
-				"select max(id), date, time, remarks from Attendance where employee_master_id=:employeeId group by date order by date desc");
+				"select attendance.* from attendance, (select date, max(time) as max_time from attendance group by date) a where attendance.date=a.date and attendance.time=a.max_time and employee_master_id=:employeeId order by date desc");
 		query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
 		query.setParameter("employeeId", employeeId);
 		List data = query.list();
