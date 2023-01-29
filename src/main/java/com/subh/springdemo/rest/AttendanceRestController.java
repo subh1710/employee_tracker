@@ -17,7 +17,7 @@ public class AttendanceRestController {
 	@Autowired
 	private AttendanceService attendanceService;
 
-	@GetMapping("/attendance/employee/{employeeId}")
+	@GetMapping("/employee/{employeeId}/attendance")
 	public ResponseEntity<APIResponse> getAttendances(@PathVariable("employeeId") Integer employeeId) {
 		APIResponse apiResponse = attendanceService.getAttendances(employeeId);
 		return ResponseEntity.status(apiResponse.getStatus()).body(apiResponse);

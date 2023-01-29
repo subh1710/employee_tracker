@@ -15,6 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -42,8 +46,8 @@ public class Employee {
 	@JoinColumn(name = "employee_login_manager_id")
 	private EmployeeLoginManager employeeLoginManager;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
-			CascadeType.REFRESH })
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "employee", cascade = { CascadeType.PERSIST, CascadeType.MERGE,
+			CascadeType.DETACH, CascadeType.REFRESH })
 	@JsonIgnore
 	private List<Notice> notices;
 
@@ -51,6 +55,13 @@ public class Employee {
 			CascadeType.REFRESH })
 	@JsonIgnore
 	private List<Attendance> attendances;
+
+	@OneToMany(mappedBy="employeeLeave", cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+			CascadeType.REFRESH })
+	@JsonIgnore
+	@LazyCollection(LazyCollectionOption.FALSE)
+//	@JoinColumn(name = "employee_master_id")
+	private List<Leave> leaves;
 
 	public Employee() {
 	}
@@ -127,6 +138,14 @@ public class Employee {
 		this.attendances = attendances;
 	}
 
+	public List<Leave> getLeaves() {
+		return leaves;
+	}
+
+	public void setLeaves(List<Leave> leaves) {
+		this.leaves = leaves;
+	}
+
 	public void addNotice(Notice tempNotice) {
 		if (notices == null) {
 			notices = new ArrayList<>();
@@ -141,6 +160,14 @@ public class Employee {
 		}
 		attendances.add(tempAttendance);
 		tempAttendance.setEmployeeAttendance(this);
+	}
+
+	public void addLeave(Leave tempLeave) {
+		if (leaves == null) {
+			leaves = new ArrayList<>();
+		}
+		leaves.add(tempLeave);
+		tempLeave.setEmployeeLeave(this);
 	}
 
 	@Override

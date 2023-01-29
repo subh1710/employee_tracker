@@ -45,18 +45,27 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		Employee theEmployee = currentSession.get(Employee.class, theId);
 		currentSession.delete(theEmployee);
 	}
-	
+
 	@Override
 	public Employee getEmployeeBySecurityCode(String empSecurityCode) throws Exception {
 		Session currentSession = sessionFactory.getCurrentSession();
 		EmployeeLoginManager employeeLoginManager = (EmployeeLoginManager) currentSession
 				.createQuery("from EmployeeLoginManager where empSecurityCode=:empSecurityCode")
 				.setParameter("empSecurityCode", empSecurityCode).getSingleResult();
-		int theId=(int) currentSession
+		int theId = (int) currentSession
 				.createQuery("select id from Employee where employeeLoginManager.id=:employeeLoginManagerId")
 				.setParameter("employeeLoginManagerId", employeeLoginManager.getId()).getSingleResult();
 		Employee theEmployee = currentSession.get(Employee.class, theId);
 		return theEmployee;
+	}
+
+	@Override
+	public int getEmpIdByFirstNameAndLastName(String firstName, String lastName) {
+		Session currentSession = sessionFactory.getCurrentSession();
+		int theId = (int) currentSession
+				.createQuery("select id from Employee where firstName=:firstName and lastName=:lastName")
+				.setParameter("firstName", firstName).setParameter("lastName", lastName).getSingleResult();
+		return theId;
 	}
 
 }

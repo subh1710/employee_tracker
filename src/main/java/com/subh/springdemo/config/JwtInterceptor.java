@@ -28,7 +28,8 @@ public class JwtInterceptor extends HandlerInterceptorAdapter {
 
         String auth = request.getHeader("authorization");
 
-        if( !(request.getRequestURI().contains("login"))){
+//        if( !(request.getRequestURI().contains("login"))){
+        if( !(request.getRequestURI().contains("employee_tracker"))){
             Claims claims = jwtUtils.verify(auth);
 
             requestMeta.setFirstName(claims.get("firstName").toString());
