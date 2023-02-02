@@ -79,6 +79,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		Map<String, Object> data = new HashMap<>();
 		data.put("Attendance", attendanceList);
 		data.put("Leaves", LeaveList);
+		data.put("Id",empId);
 		apiResponse.setData(data);
 		return apiResponse;
 	}

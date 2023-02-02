@@ -2,6 +2,7 @@ package com.subh.springdemo.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +21,7 @@ import com.subh.springdemo.service.AttendanceService;
 import com.subh.springdemo.service.EmployeeService;
 import com.subh.springdemo.service.LeaveService;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class LeaveRestController {
